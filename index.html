@@ -40,7 +40,7 @@
         }
         .bot {
             background: #2196F3;
-            text-align: left;
+            text-align: left.
         }
         #input-container {
             display: flex;
@@ -51,22 +51,22 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            margin-right: 10px;
+            margin-right: 10px.
         }
         #send-button {
             padding: 10px 20px;
             background: #4CAF50;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
+            cursor: pointer.
         }
         #add-question-button, #view-questions-button {
             margin-top: 10px;
-            padding: 10px 20px;
+            padding: 10px 20px.
             background: #2196F3;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
+            cursor: pointer.
         }
     </style>
 </head>
@@ -92,98 +92,53 @@
             'hello': 'Hello there! How can I assist you today?',
             'how are you?': 'I am just a bot, but I am doing great! How about you?',
             'bye': 'Goodbye! Have a great day!',
-            'what is your name?': 'I am ultra ai!',
+            'what is your name?': 'I am your friendly AI companion!',
             'what can you do?': 'I can chat with you, answer questions, and provide information on various topics!',
-            'tell me a joke': 'Why don’t scientists trust atoms? Because they make up everything!'
-            'what is my name': 'I don't know yet, but I hope we become best friends!'
-        };
-
-        function getBotResponses() {
-            return JSON.parse(localStorage.getItem('botResponses')) || defaultBotResponses;
-        }
-
-        function setBotResponses(botResponses) {
-            localStorage.setItem('botResponses', JSON.stringify(botResponses));
-        }
-
-        function addMessage(content, className) {
-            const messageElement = document.createElement('li');
-            messageElement.textContent = content;
-            messageElement.className = className;
-            messages.appendChild(messageElement);
-            messages.scrollTop = messages.scrollHeight;
-        }
-
-        async function fetchFromWikipedia(query) {
-            const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`);
-            if (response.ok) {
-                const data = await response.json();
-                return data.extract || 'I couldn\'t find anything relevant Pranav.';
-            } else {
-                return 'I couldn\'t find anything relevant.';
-            }
-        }
-
-        async function handleUserInput() {
-            const userText = userInput.value.trim();
-            if (userText) {
-                addMessage(userText, 'user');
-                userInput.value = '';
-
-                const botResponses = getBotResponses();
-                let botReply = botResponses[userText.toLowerCase()];
-
-                if (!botReply) {
-                    botReply = await fetchFromWikipedia(userText);
-                }
-
-                setTimeout(() => addMessage(botReply, 'bot'), 1000);
-            }
-        }
-
-        function addNewQuestion() {
-            const question = prompt('Enter the new question:');
-            const answer = prompt('Enter the answer:');
-
-            if (question && answer) {
-                const botResponses = getBotResponses();
-                botResponses[question.toLowerCase()] = answer;
-                setBotResponses(botResponses);
-                alert('New question added successfully!');
-            } else {
-                alert('Question and answer cannot be empty.');
-            }
-        }
-
-        function viewAvailableQuestions() {
-            const botResponses = getBotResponses();
-            alert('Available Questions:\n' + Object.keys(botResponses).join('\n'));
-        }
-
-        sendButton.addEventListener('click', handleUserInput);
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleUserInput();
-            }
-        });
-
-        addQuestionButton.addEventListener('click', addNewQuestion);
-        viewQuestionsButton.addEventListener('click', viewAvailableQuestions);
-    </script>
-</body>
-</html>
-
+            'tell me a joke': 'Why don’t scientists trust atoms? Because they make up everything!',
+            'tell me a fun fact': 'Did you know? An octopus has three hearts and blue blood.',
+            'what is the triple point?': 'The triple point is a phenomenon where water can boil and freeze simultaneously.',
+            'tell me about venus': 'A day on Venus is longer than a year on Venus due to its slow rotation.',
+            'shortest war in history': 'The shortest war in history was between Britain and Zanzibar on August 27, 1896. Zanzibar surrendered after 38 minutes.',
+            'russia vs pluto': 'Russia has a larger surface area than Pluto.',
+            'how many scents can a human nose detect?': 'The human nose can detect about one trillion different scents.',
+            'what is the first novel?': '"The Tale of Genji" by Murasaki Shikibu is considered the world\'s first novel, written in Japan around the year 1000.',
+            'origin of olympic games': 'The Olympic Games were originally a religious festival in honor of Zeus.',
+            'first 1gb hard drive': 'The first 1GB hard disk drive, introduced in 1980, weighed over 500 pounds.',
+            'does honey spoil?': 'Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3000 years old and still edible.',
+            // Adding more facts about movies, songs, animals, and more.
+            'who is the highest-grossing movie of all time?': 'As of now, the highest-grossing movie of all time is "Avatar" directed by James Cameron.',
+            'what is the most-streamed song on Spotify?': 'The most-streamed song on Spotify is "Shape of You" by Ed Sheeran.',
+            'what is the most-watched TV show?': 'The most-watched TV show of all time is "M*A*S*H," particularly its final episode.',
+            'who is the most awarded Grammy artist?': 'The most awarded Grammy artist is Beyoncé with 28 wins.',
+            'what is the longest-running TV series?': 'The longest-running TV series is "The Simpsons," which debuted in 1989.',
+            'what is the fastest land animal?': 'The fastest land animal is the cheetah, which can reach speeds of up to 70 mph.',
+            'which bird has the longest wingspan?': 'The bird with the longest wingspan is the wandering albatross, which can reach up to 12 feet.',
+            'what is the most popular pet in the world?': 'The most popular pet in the world is the dog.',
+            'what is the smallest mammal?': 'The smallest mammal by weight is the bumblebee bat, also known as Kitti\'s hog-nosed bat.',
+            'which mammal has the largest brain?': 'The mammal with the largest brain is the sperm whale.',
+            'what is the tallest building in the world?': 'The tallest building in the world is the Burj Khalifa in Dubai, standing at 828 meters (2,717 feet).',
+            'who holds the record for the most Olympic gold medals?': 'Michael Phelps holds the record for the most Olympic gold medals, with a total of 23 golds.',
+            'what is the largest planet in the solar system?': 'The largest planet in the solar system is Jupiter.',
+            'what is the hardest natural substance on Earth?': 'The hardest natural substance on Earth is diamond.',
+            'which country has the most time zones?': 'France has the most time zones, including its overseas territories.',
+            'what is the oldest continuously inhabited city in the world?': 'The oldest continuously inhabited city in the world is Damascus, Syria.',
+            'what is the deepest part of the world\'s oceans?': 'The deepest part of the world\'s oceans is the Mariana Trench in the Pacific Ocean.',
+            'who is known as the "father of computers"?': 'Charles Babbage is known as the "father of computers."',
+            'what is the largest desert in the world?': 'The largest desert in the world is the Sahara Desert in Africa.',
+            'which continent has the most countries?': 'Africa has the most countries of any continent, with a total of 54.',
+            'what is the oldest surviving written document?': 'The oldest surviving written document is the Kish Tablet, which dates back to around 3500 BC.',
+            'what is the most expensive painting ever sold?': 'The most expensive painting ever sold is Leonardo da Vinci\'s "Salvator Mundi," which was sold for $450 million.',
+            'who is the best-selling music artist of all time?': 'The best-selling music artist of all time is The Beatles.',
+            'what is the tallest waterfall in the world?': 'The tallest waterfall in the world is Angel Falls in Venezuela.',
+            'what is the most spoken language in the world?': 'The most spoken language in the world by number of native speakers is Mandarin Chinese.',
+            'who is the richest person in the world?': 'As of now, the richest person in the world is Elon Musk.',
+            'what is the smallest country in the world?': 'The smallest country in the world by land area is Vatican City.',
+            'which animal has the longest lifespan?': 'The animal with the longest lifespan is the Greenland shark, which can live for over 400 years.',
+            'what is the most popular sport in the world?': 'The most popular sport in the world is soccer (football).',
+            'what is the oldest tree in the world?': 'The oldest tree in the world is the Great Basin Bristlecone Pine in California, estimated to be over 5,000 years old.',
+            'what is the most visited tourist attraction in the world?': 'The most visited tourist attraction in the world is the Great Wall of China.',
+            'who is the most followed person on Instagram?': 'As of now, the most followed person on Instagram[_{{{CITATION{{{_1{](https://github.com/EleanorEllingson/web-dev/tree/b2f2a382e77a20fd6895677c8b8f402ac4bae352/7-bank-project%2F1-template-route%2Ftranslations%2FREADME.ko.md)
            
-        
-
-       
-       
-            
-           
-           
-  
-
-
           
           
 
