@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced AI Chatbot with APIs</title>
+    <style>
+        body {
+            background: #1e1e1e;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        #chat-container {
+            background: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        #messages {
+            list-style: none;
+            padding: 0;
+        }
+        #messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .user {
+            background: #4CAF50;
+            text-align: right;
+        }
+        .bot {
+            background: #2196F3;
+            text-align: left;
+        }
+        #input-container {
+            display: flex;
+            margin-top: 10px;
+        }
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #send-button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #add-info-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #2196F3;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <ul id="messages"></ul>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+    <button id="add-info-button">Add New Info</button>
+
+    <script>
+        const messages = document.getElementById('messages');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const addInfoButton = document.getElementById('add-info-button');
+
+        const defaultBotResponses = {
+            'hello': 'Hello there! How can I assist you today?',
+            'how are you?': 'I am just a bot, but I am doing great! How about you?',
+            'bye': 'Goodbye! Have a great day!',
+            'what is your name?': 'I am your friendly AI companion!',
+            'what can you do?': 'I can chat with you, answer questions, and provide information on various topics!',
+            'tell me a joke': 'Why don’t scientists trust atoms? Because they make up everything!',
+            'show me a cat': 'Sure, here\'s a cat for you: https://http.cat/200',
+            'show me a fox': 'Sure, here\'s a fox for you: https://randomfox.ca/floof/',
+            'show me a dog': 'Sure, here\'s a dog for you: https://dog.ceo/api/breeds/image/random',
+            'show me a placeholder image': 'Sure, here\'s a placeholder image: https://picsum.photos/200/300',
+            'github user': 'Please provide a GitHub username to fetch user data.'
+        };
+
+        function getBotResponses() {
+            return JSON.parse(localStorage.getItem('botResponses')) || defaultBotResponses;
+        }
+
+        function setBotResponses(botResponses) {
+            localStorage.setItem('botResponses', JSON.stringify(botResponses));
+        }
+
+        function addMessage(content, className) {
+            const messageElement = document.createElement('li');
+            messageElement.textContent = content;
+            messageElement.className = className;
+            messages.appendChild(messageElement);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        async function fetchGitHubUser (username) {
+            try {
+                const response = await fetch(`https://api.github.com/users/${
+                                  const response = await fetch(`https://api.github.com/users/${username}`);
+                if (!response.ok) {
+                    throw new Error('User  not found');
+                }
+                const data = await response.json();
+                addMessage(`GitHub User: ${data.login}, Bio: ${data.bio || 'No bio available'}, Public Repos: ${data.public_repos}`, 'bot');
+            } catch (error) {
+                addMessage(error.message, 'bot');
+            }
+        }
+
+        sendButton.addEventListener('click', () => {
+            const userMessage = userInput.value.trim();
+            if (userMessage) {
+                addMessage(userMessage, 'user');
+                userInput.value = '';
+
+                if (userMessage.toLowerCase().startsWith('github user')) {
+                    const username = userMessage.split(' ')[2];
+                    if (username) {
+                        fetchGitHubUser (username);
+                    } else {
+                        addMessage('Please provide a GitHub username.', 'bot');
+                    }
+                } else {
+                    const response = getBotResponses()[userMessage.toLowerCase()] || 'I am not sure how to respond to that.';
+                    addMessage(response, 'bot');
+                }
+            }
+        });
+
+        addInfoButton.addEventListener('click', () => {
+            const newInfo = prompt('Enter new bot response in the format "user message: bot response"');
+            if (newInfo) {
+                const [userMessage, botResponse] = newInfo.split(':');
+                if (userMessage && botResponse) {
+                    const botResponses = getBotResponses();
+                    botResponses[userMessage.trim().toLowerCase()] = botResponse.trim();
+                    setBotResponses(botResponses);
+                    addMessage('New info added!', 'bot');
+                } else {
+                    addMessage('Invalid format. Please use "user message: bot response".', 'bot');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
