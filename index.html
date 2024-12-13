@@ -116,12 +116,11 @@
             messages.scrollTop = messages.scrollHeight;
         }
 
-        async function fetchGitHubUser (username) {
+        async function fetchGitHubUser(username) {
             try {
-                const response = await fetch(`https://api.github.com/users/${
-                                  const response = await fetch(`https://api.github.com/users/${username}`);
+                const response = await fetch(`https://api.github.com/users/${username}`);
                 if (!response.ok) {
-                    throw new Error('User  not found');
+                    throw new Error('User not found');
                 }
                 const data = await response.json();
                 addMessage(`GitHub User: ${data.login}, Bio: ${data.bio || 'No bio available'}, Public Repos: ${data.public_repos}`, 'bot');
@@ -139,7 +138,7 @@
                 if (userMessage.toLowerCase().startsWith('github user')) {
                     const username = userMessage.split(' ')[2];
                     if (username) {
-                        fetchGitHubUser (username);
+                        fetchGitHubUser(username);
                     } else {
                         addMessage('Please provide a GitHub username.', 'bot');
                     }
@@ -167,3 +166,8 @@
     </script>
 </body>
 </html>
+
+       
+           
+                
+
